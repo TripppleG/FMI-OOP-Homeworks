@@ -1,0 +1,7 @@
+#include "Duelist.h"
+
+int main()
+{
+	
+	return 0;
+}
