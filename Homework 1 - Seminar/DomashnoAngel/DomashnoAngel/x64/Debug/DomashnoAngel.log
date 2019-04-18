@@ -1,0 +1,5 @@
+﻿  Date.cpp
+  main.cpp
+  Generating Code...
+C:\Users\Georgi Gazepov\Desktop\OOP at home\Homeworks\FMI-OOP-Homeworks\Homework 1 - Seminar\DomashnoAngel\DomashnoAngel\Date.cpp(95): warning C4715: 'Date::DaysInMonth': not all control paths return a value
+  DomashnoAngel.vcxproj -> C:\Users\Georgi Gazepov\Desktop\OOP at home\Homeworks\FMI-OOP-Homeworks\Homework 1 - Seminar\DomashnoAngel\x64\Debug\DomashnoAngel.exe

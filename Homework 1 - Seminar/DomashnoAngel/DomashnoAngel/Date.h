@@ -26,4 +26,4 @@ public:
 	bool IsLaterThan(const Date&) const;
 };
 
-int GetDifference(const Date& d1, const Date& d2);
+int GetDifference(const Date&, const Date&);

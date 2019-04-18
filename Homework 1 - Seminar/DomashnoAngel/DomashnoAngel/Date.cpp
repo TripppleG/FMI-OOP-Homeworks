@@ -224,7 +224,33 @@ bool Date::IsLaterThan(const Date& date) const
 
 int GetDifference(const Date& d1, const Date& d2)
 {
-	int counter;
-	
-	return ;
+	Date temp1;
+	Date temp2;
+	if (d1.IsLaterThan(d2))
+	{
+		temp1.SetDay(d2.GetDay());
+		temp1.SetMonth(d2.GetMonth());
+		temp1.SetYear(d2.GetYear());
+
+		temp2.SetDay(d1.GetDay());
+		temp2.SetMonth(d1.GetMonth());
+		temp2.SetYear(d1.GetYear());
+	}
+	else
+	{
+		temp2.SetDay(d2.GetDay());
+		temp2.SetMonth(d2.GetMonth());
+		temp2.SetYear(d2.GetYear());
+
+		temp1.SetDay(d1.GetDay());
+		temp1.SetMonth(d1.GetMonth());
+		temp1.SetYear(d1.GetYear());
+	}
+	int counter = 0;
+	while (temp1.GetYear() != temp2.GetYear() || temp1.GetMonth() != temp2.GetMonth() || temp1.GetDay() != temp2.GetDay())
+	{
+		counter++;
+		temp1.AddDays(1);
+	}
+	return counter;
 }
