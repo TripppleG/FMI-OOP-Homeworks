@@ -221,3 +221,10 @@ bool Date::IsLaterThan(const Date& date) const
 	}
 	return false;
 }
+
+int GetDifference(const Date& d1, const Date& d2)
+{
+	int counter;
+	
+	return ;
+}
