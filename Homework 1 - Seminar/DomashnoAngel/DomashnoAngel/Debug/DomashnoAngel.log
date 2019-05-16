@@ -1,3 +1,0 @@
-﻿  Date.cpp
-C:\Users\Georgi Gazepov\Desktop\OOP at home\DomashnoAngel\DomashnoAngel\Date.cpp(95): warning C4715: 'Date::DaysInMonth': not all control paths return a value
-  DomashnoAngel.vcxproj -> C:\Users\Georgi Gazepov\Desktop\OOP at home\DomashnoAngel\Debug\DomashnoAngel.exe
