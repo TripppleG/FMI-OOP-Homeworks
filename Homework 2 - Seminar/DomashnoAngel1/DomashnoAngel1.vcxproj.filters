@@ -15,40 +15,43 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="User.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PopFolkClub.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RockClub.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HouseClub.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Club.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="User.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PopFolkClub.cpp">
+    <ClCompile Include="HouseClub.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RockClub.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HouseClub.cpp">
+    <ClCompile Include="PopFolkClub.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Club.cpp">
+    <ClCompile Include="TypeOfClub.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="User.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HouseClub.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RockClub.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PopFolkClub.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeOfClub.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ClubsAndUsers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
