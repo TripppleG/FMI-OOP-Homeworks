@@ -1,21 +1,10 @@
 #include "HouseClub.h"
 
-void HouseClub::SetName(const char* name)
-{
-	int len = strlen(name);
-	this->name = new char[len + 1];
-	if (len == 0)
-	{
-		throw "Invalid Name!";
-	}
-	strcpy_s(this->name, len + 1, name);
-}
-
 void HouseClub::SetWhiskeyPrice(double whiskeyPrice)
 {
 	if (whiskeyPrice < 40)
 	{
-		throw "Invalid Whiskey Price!";
+		throw "Invalid Whyskey Price!";
 	}
 	this->whiskeyPrice = whiskeyPrice;
 }
@@ -24,7 +13,7 @@ void HouseClub::SetVodkaPrice(double vodkaPrice)
 {
 	if (vodkaPrice < 30)
 	{
-		throw "Invalid Vodka Price!";
+		throw "Invalid Whyskey Price!";
 	}
 	this->vodkaPrice = vodkaPrice;
 }
@@ -40,37 +29,45 @@ void HouseClub::SetNumberOfDJs(int numberOfDJs)
 
 void HouseClub::Resize()
 {
+	User* temp = new User[capacity * 2];
+	for (int i = 0; i < capacity; i++)
+	{
+		temp[i] = users[i];
+	}
 	capacity *= 2;
+	delete[] users;
+	users = temp;
 }
 
 void HouseClub::CopyFrom(const HouseClub& other)
 {
-	SetName(other.name);
+	users = new User[other.capacity];
+	for (int i = 0; i < other.capacity; i++)
+	{
+		users[i] = other.users[i];
+	}
+
+	SetNumberOfDJs(other.numberOfDJs);
 	SetWhiskeyPrice(other.whiskeyPrice);
 	SetVodkaPrice(other.vodkaPrice);
-	SetNumberOfDJs(other.numberOfDJs);
 	capacity = other.capacity;
 }
 
 void HouseClub::Free()
 {
-	delete[] name;
 	capacity = 0;
-	whiskeyPrice = 0;
-	vodkaPrice = 0;
 	numberOfDJs = 0;
 }
 
-HouseClub::HouseClub(const char* name, double whiskeyPrice, double vodkaPrice, int numberOfDJs) : TypeOfClub(name)
+HouseClub::HouseClub(const char* name, double whiskeyPrice, double vodkaPrice, int numberOfDJs) : Club(name, whiskeyPrice, vodkaPrice)
 {
-	SetName(name);
 	capacity = 1;
 	SetWhiskeyPrice(whiskeyPrice);
 	SetVodkaPrice(vodkaPrice);
 	SetNumberOfDJs(numberOfDJs);
 }
 
-HouseClub::HouseClub(const HouseClub& other) : TypeOfClub(other)
+HouseClub::HouseClub(const HouseClub& other) : Club(other)
 {
 	CopyFrom(other);
 }
@@ -80,7 +77,7 @@ HouseClub& HouseClub::operator=(const HouseClub& other)
 	if (this != &other)
 	{
 		Free();
-		TypeOfClub::operator=(other);
+		Club::operator=(other);
 		CopyFrom(other);
 	}
 	return *this;
@@ -91,15 +88,35 @@ HouseClub::~HouseClub()
 	Free();
 }
 
-TypeOfClub* HouseClub::Clone()
+Club* HouseClub::Clone() const
 {
 	HouseClub* copy = new HouseClub(*this);
 	return copy;
 }
 
+void HouseClub::AddUser(const User& user)
+{
+	if (usersInClub == capacity)
+	{
+		Resize();
+	}
+	users[usersInClub] = user;
+	usersInClub++;
+}
+
+const char* HouseClub::GetMusicType() const
+{
+	return "House";
+}
+
 const char* HouseClub::GetName() const
 {
 	return name;
+}
+
+int HouseClub::GetCapacity() const
+{
+	return capacity;
 }
 
 double HouseClub::GetWhiskeyPrice() const
@@ -110,9 +127,4 @@ double HouseClub::GetWhiskeyPrice() const
 double HouseClub::GetVodkaPrice() const
 {
 	return vodkaPrice;
-}
-
-int HouseClub::GetNumberOfDJs() const
-{
-	return numberOfDJs;
 }

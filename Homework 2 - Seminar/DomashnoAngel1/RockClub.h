@@ -1,15 +1,13 @@
 #pragma once
-#include "TypeOfClub.h"
+#include "Club.h"
 
-class RockClub : public TypeOfClub
+class RockClub : virtual public Club
 {
 private:
-	char* name;
 	int capacity;
 	double whiskeyPrice;
 	double vodkaPrice;
-	
-	void SetName(const char*);
+
 	void SetWhiskeyPrice(double);
 	void SetVodkaPrice(double);
 
@@ -20,10 +18,11 @@ public:
 	RockClub(const RockClub&);
 	RockClub& operator=(const RockClub&);
 	~RockClub();
-	TypeOfClub* Clone();
+	Club* Clone() const;
 
-	const char* GetName() const;
+	const char* GetMusicType() const;
 	int GetCapacity() const;
 	double GetWhiskeyPrice() const;
 	double GetVodkaPrice() const;
+	void AddUser(const User&);
 };

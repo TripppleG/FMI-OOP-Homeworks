@@ -3,7 +3,6 @@
 void User::SetName(const char* name)
 {
 	int len = strlen(name);
-	this->name = new char[len + 1];
 	if (len == 0)
 	{
 		throw "Invalid name!";
@@ -15,12 +14,13 @@ void User::SetName(const char* name)
 			throw "Invalid name!";
 		}
 	}
+	this->name = new char[len + 1];
 	strcpy_s(this->name, len + 1, name);
 }
 
 void User::SetAge(int age)
 {
-	if (age <= 0 || age > 130) // Oldest person ever lived died when he was 122 y/o
+	if (age <= 0 || age > 130) // The oldest person ever lived died at the age of 122
 	{
 		throw "Invalid Age!";
 	}
@@ -57,11 +57,11 @@ void User::SetNumberOfVodkasToDrink(int numberOfVodkasToDrink)
 void User::SetPreferedMusic(const char* preferedMusic)
 {
 	int len = strlen(preferedMusic);
-	this->preferedMusic = new char[len + 1];
-	if (preferedMusic != "Pop-Folk" || preferedMusic != "House" || preferedMusic != "Rock" || preferedMusic != "Everything")
+	if (strcmp(preferedMusic, "Pop-Folk") && strcmp(preferedMusic, "House") && strcmp(preferedMusic, "Rock") && strcmp(preferedMusic, "Everything"))
 	{
 		throw "Invalid Prefered Music!";
 	}
+	this->preferedMusic = new char[len + 1];
 	strcpy_s(this->preferedMusic, len + 1, preferedMusic);
 }
 
@@ -85,9 +85,19 @@ void User::Free()
 	delete[] preferedMusic;
 }
 
-User::User(){}
+User::User()
+{
+	name = new char[1];
+	name[0] = '\0';
+	age = 0;
+	budget = 0;
+	numberOfVodkasToDrink = 0;
+	numberOfWhiskeysToDrink = 0;
+	preferedMusic = new char[1];
+	preferedMusic[0] = '\0';
+}
 
-User::User(char* name, int age, double budget, int numberOfWhiskeysToDrink, int numberOfVodkasToDrink, char* preferedMusic)
+User::User(const char* name, int age, double budget, int numberOfWhiskeysToDrink, int numberOfVodkasToDrink, const char* preferedMusic)
 {
 	SetName(name);
 	SetAge(age);

@@ -30,7 +30,10 @@
     <ClCompile Include="PopFolkClub.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TypeOfClub.cpp">
+    <ClCompile Include="Club.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ClubCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,10 +50,10 @@
     <ClInclude Include="PopFolkClub.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TypeOfClub.h">
+    <ClInclude Include="Club.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ClubsAndUsers.h">
+    <ClInclude Include="ClubCollection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

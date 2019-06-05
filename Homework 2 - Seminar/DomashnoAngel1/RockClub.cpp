@@ -1,16 +1,5 @@
 #include "RockClub.h"
 
-void RockClub::SetName(const char* name)
-{
-	int len = strlen(name);
-	this->name = new char[len + 1];
-	if (len == 0)
-	{
-		throw "Invalid Name!";
-	}
-	strcpy_s(this->name, len + 1, name);
-}
-
 void RockClub::SetWhiskeyPrice(double whiskeyPrice)
 {
 	if (whiskeyPrice < 30)
@@ -31,7 +20,11 @@ void RockClub::SetVodkaPrice(double vodkaPrice)
 
 void RockClub::CopyFrom(const RockClub& other)
 {
-	SetName(other.name);
+	users = new User[other.capacity];
+	for (int i = 0; i < other.capacity; i++)
+	{
+		users[i] = other.users[i];
+	}
 	SetWhiskeyPrice(other.whiskeyPrice);
 	SetVodkaPrice(other.vodkaPrice);
 	capacity = other.capacity;
@@ -39,21 +32,19 @@ void RockClub::CopyFrom(const RockClub& other)
 
 void RockClub::Free()
 {
-	delete[] name;
 	capacity = 0;
 	whiskeyPrice = 0;
 	vodkaPrice = 0;
 }
 
-RockClub::RockClub(const char* name, double whiskeyPrice, double vodkaPrice) : TypeOfClub(name)
+RockClub::RockClub(const char* name, double whiskeyPrice, double vodkaPrice) : Club(name, whiskeyPrice, vodkaPrice)
 {
-	SetName(name);
 	capacity = 30;
 	SetWhiskeyPrice(whiskeyPrice);
 	SetVodkaPrice(vodkaPrice);
 }
 
-RockClub::RockClub(const RockClub& other) : TypeOfClub(other)
+RockClub::RockClub(const RockClub& other) : Club(other)
 {
 	CopyFrom(other);
 }
@@ -63,7 +54,7 @@ RockClub& RockClub::operator=(const RockClub& other)
 	if (this != &other)
 	{
 		Free();
-		TypeOfClub::operator=(other);
+		Club::operator=(other);
 		CopyFrom(other);
 	}
 	return *this;
@@ -74,15 +65,15 @@ RockClub::~RockClub()
 	Free();
 }
 
-TypeOfClub* RockClub::Clone()
+Club* RockClub::Clone() const
 {
-	TypeOfClub* copy = new RockClub(*this);
+	Club* copy = new RockClub(*this);
 	return copy;
 }
 
-const char* RockClub::GetName() const
+const char* RockClub::GetMusicType() const
 {
-	return name;
+	return "Rock";
 }
 
 int RockClub::GetCapacity() const
@@ -98,4 +89,10 @@ double RockClub::GetWhiskeyPrice() const
 double RockClub::GetVodkaPrice() const
 {
 	return vodkaPrice;
+}
+
+void RockClub::AddUser(const User& user)
+{
+	users[usersInClub] = user;
+	usersInClub++;
 }

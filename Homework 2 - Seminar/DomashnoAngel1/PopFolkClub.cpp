@@ -1,16 +1,5 @@
 #include "PopFolkClub.h"
 
-void PopFolkClub::SetName(const char* name)
-{
-	int len = strlen(name);
-	this->name = new char[len + 1];
-	if (len == 0)
-	{
-		throw "Invalid Name!";
-	}
-	strcpy_s(this->name, len + 1, name);
-}
-
 void PopFolkClub::SetWhiskeyPrice(double whiskeyPrice)
 {
 	if (whiskeyPrice < 35)
@@ -42,7 +31,11 @@ void PopFolkClub::SetSingerName(const char* singerName)
 
 void PopFolkClub::CopyFrom(const PopFolkClub& other)
 {
-	SetName(other.name);
+	users = new User[other.capacity];
+	for (int i = 0; i < other.capacity; i++)
+	{
+		users[i] = other.users[i];
+	}
 	SetWhiskeyPrice(other.whiskeyPrice);
 	SetVodkaPrice(other.vodkaPrice);
 	SetSingerName(other.singerName);
@@ -51,21 +44,21 @@ void PopFolkClub::CopyFrom(const PopFolkClub& other)
 
 void PopFolkClub::Free()
 {
-	delete[] name;
 	capacity = 0;
 	whiskeyPrice = 0;
 	vodkaPrice = 0;
+	delete[] singerName;
 }
 
-PopFolkClub::PopFolkClub(const char* name, double whiskeyPrice, double vodkaPrice) : TypeOfClub(name)
+PopFolkClub::PopFolkClub(const char* name, double whiskeyPrice, double vodkaPrice, const char* singerName) : Club(name, whiskeyPrice, vodkaPrice)
 {
-	SetName(name);
 	capacity = 70;
 	SetWhiskeyPrice(whiskeyPrice);
 	SetVodkaPrice(vodkaPrice);
+	SetSingerName(singerName);
 }
 
-PopFolkClub::PopFolkClub(const PopFolkClub& other) : TypeOfClub(other)
+PopFolkClub::PopFolkClub(const PopFolkClub& other) : Club(other)
 {
 	CopyFrom(other);
 }
@@ -75,7 +68,7 @@ PopFolkClub& PopFolkClub::operator=(const PopFolkClub& other)
 	if (this != &other)
 	{
 		Free();
-		TypeOfClub::operator=(other);
+		Club::operator=(other);
 		CopyFrom(other);
 	}
 	return *this;
@@ -86,15 +79,15 @@ PopFolkClub::~PopFolkClub()
 	Free();
 }
 
-TypeOfClub* PopFolkClub::Clone()
+Club* PopFolkClub::Clone() const
 {
-	TypeOfClub* copy = new PopFolkClub(*this);
+	Club* copy = new PopFolkClub(*this);
 	return copy;
 }
 
-const char* PopFolkClub::GetName() const
+const char* PopFolkClub::GetMusicType() const
 {
-	return name;
+	return "Pop-Folk";
 }
 
 int PopFolkClub::GetCapacity() const
@@ -115,4 +108,10 @@ double PopFolkClub::GetVodkaPrice() const
 const char* PopFolkClub::GetSingerName() const
 {
 	return singerName;
+}
+
+void PopFolkClub::AddUser(const User& user)
+{
+	users[usersInClub] = user;
+	usersInClub++;
 }

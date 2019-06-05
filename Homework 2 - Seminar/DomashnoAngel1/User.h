@@ -10,25 +10,27 @@ private:
 	int numberOfWhiskeysToDrink;
 	int numberOfVodkasToDrink;
 	char* preferedMusic;
+
 	void SetName(const char*);
 	void SetAge(int);
-	void SetBudget(double);
 	void SetNumberOfWhiskeysToDrink(int);
 	void SetNumberOfVodkasToDrink(int);
 	void SetPreferedMusic(const char*);
 
 	void CopyFrom(const User&);
 	void Free();
+
 public:
 	User();
-	User(char*, int, double, int, int, char*);
+	User(const char*, int, double, int, int, const char*);
 	User(const User&);
 	User& operator=(const User&);
 	~User();
 
+	void SetBudget(double);
 	const char* GetName() const;
-	int GetAge() const;
 	double GetBudget() const;
+	int GetAge() const;
 	int GetNumberOfWhiskeysToDrink() const;
 	int GetNumberOfVodkasToDrink() const;
 	const char* GetPreferedMusic() const;
