@@ -40,6 +40,7 @@ void RockClub::Free()
 RockClub::RockClub(const char* name, double whiskeyPrice, double vodkaPrice) : Club(name, whiskeyPrice, vodkaPrice)
 {
 	capacity = 30;
+	users = new User[capacity];
 	SetWhiskeyPrice(whiskeyPrice);
 	SetVodkaPrice(vodkaPrice);
 }

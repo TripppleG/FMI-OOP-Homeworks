@@ -62,6 +62,7 @@ void HouseClub::Free()
 HouseClub::HouseClub(const char* name, double whiskeyPrice, double vodkaPrice, int numberOfDJs) : Club(name, whiskeyPrice, vodkaPrice)
 {
 	capacity = 1;
+	users = new User[capacity];
 	SetWhiskeyPrice(whiskeyPrice);
 	SetVodkaPrice(vodkaPrice);
 	SetNumberOfDJs(numberOfDJs);

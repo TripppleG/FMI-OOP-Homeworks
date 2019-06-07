@@ -53,6 +53,7 @@ void PopFolkClub::Free()
 PopFolkClub::PopFolkClub(const char* name, double whiskeyPrice, double vodkaPrice, const char* singerName) : Club(name, whiskeyPrice, vodkaPrice)
 {
 	capacity = 70;
+	users = new User[capacity];
 	SetWhiskeyPrice(whiskeyPrice);
 	SetVodkaPrice(vodkaPrice);
 	SetSingerName(singerName);
