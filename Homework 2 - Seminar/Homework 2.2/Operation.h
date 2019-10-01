@@ -4,22 +4,23 @@
 class Operation : public BooleanExpression
 {
 private:
-	char operation;
 	BooleanExpression* leftStatement;
+	char operation;
 	BooleanExpression* rightStatement;
-	bool resultFirstCase = false;
-	bool resultSecondCase = false;
-	bool resultThirdCase = true;
-	bool resultFourthCase = true;
-	int variableCount = 0;
+	void Resize();
+	bool** boolMatrix;
+	int row = 2;
+	int column = 1;
 public:
 	Operation(BooleanExpression*, char, BooleanExpression*);
-	Operation(char, BooleanExpression*);
+	Operation(const Operation&) = delete;
+	Operation& operator=(const Operation&) = delete;
 	~Operation();
 
+	int NumberOfVariables();
 	bool IsContradiction();
 	bool IsContingency();
 	bool IsTautology();
-	bool Evaluate();
+	void Evaluate();
 	void Print();
 };

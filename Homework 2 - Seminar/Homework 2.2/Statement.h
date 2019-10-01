@@ -5,9 +5,12 @@ class Statement : public BooleanExpression
 {
 private:
 	char variable;
+	char foundVariables[20];
+	
 public:
 	Statement(char);
-	bool Evaluate();
+	int NumberOfVariables();
+	void Evaluate();
 	void Print();
 	~Statement();
 };
