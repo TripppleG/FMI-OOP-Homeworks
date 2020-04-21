@@ -52,18 +52,8 @@ Player::Player(const char name[MAX_NAME_SIZE], int age)
 	SetName(name);
 	SetAge(age);
 	wins = 0;
-	winCoef = 0;
 	playedGames = 0;
-}
-
-std::ostream& operator<<(std::ostream& is, Player p)
-{
-	return is << p.name << ' ' << p.age << ' ' << p.wins << ' ' << p.winCoef << std::endl;
-}
-
-std::istream& operator>>(std::istream& is, Player p)
-{
-	return (is >> p.age >> p.wins >> p.winCoef).getline(p.name, MAX_NAME_SIZE);
+	winCoef = 0;
 }
 
 const char* Player::GetName() const
@@ -91,12 +81,12 @@ double Player::GetWinCoef() const
 	return winCoef;
 }
 
-void Player::Write(std::ostream& os)
-{
-	os.write((const char*)this, sizeof(Player));
-}
-
 void Player::Read(std::istream& is)
 {
 	is.read((char*)this, sizeof(Player));
+}
+
+void Player::Write(std::ostream& os)
+{
+	os.write((const char*)this, sizeof(Player));
 }

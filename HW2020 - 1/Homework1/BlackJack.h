@@ -1,7 +1,8 @@
 #pragma once
 #include "Player.h"
 #include "Deck.h"
-#include <fstream>
+
+const char FILE_NAME[] = "PlayersInfo.bin";
 
 class BlackJack
 {
@@ -10,20 +11,12 @@ class BlackJack
 	double chanceToTwentyOne;
 	unsigned short playerCurrentPoints;
 	unsigned short dealerCurrentPoints;
-	unsigned playerWins;
-	unsigned playerGamesPlayed;
-	double playerWinCoef; // TODO: Add to the constructor
 
+	void GameStart(bool newGame = false);
 	void PlayerDraw();
 	void DealerDraw();
-	void GameStart(bool newGame = false);
-	void LoadFromFile(const char* fileName);
 	double ChanceToTwentyOne(const Deck& deck);
+	void SaveToFile(const char* fileName);
 public:
 	BlackJack();
-	unsigned wins()const { return playerWins; }
-	unsigned games()const { return playerGamesPlayed; }
-	unsigned coef()const { return playerWinCoef; }
-	void SaveToFile(const char* fileName);
-
 };

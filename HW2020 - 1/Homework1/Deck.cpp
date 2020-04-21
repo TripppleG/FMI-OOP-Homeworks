@@ -1,6 +1,5 @@
 #include "Deck.h"
-#include <time.h>
-#include <string.h>
+#include <ctime>
 
 void Deck::ShuffleCharArrays(char ranks[13][3], char suits[4][9])
 {

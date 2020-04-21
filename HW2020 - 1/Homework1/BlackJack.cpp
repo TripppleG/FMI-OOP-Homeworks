@@ -1,4 +1,94 @@
 #include "BlackJack.h"
+#include <iomanip>
+
+void BlackJack::GameStart(bool newGame)
+{
+	char name[MAX_NAME_SIZE];
+	int age;
+	playerCurrentPoints = 0;
+	dealerCurrentPoints = 0;
+	chanceToTwentyOne = 0;
+
+	if (newGame)
+	{
+		std::cout << std::endl;
+	}
+
+	std::ifstream inFile(FILE_NAME, std::ios::binary);
+	if (!inFile)
+	{
+		inFile.open(FILE_NAME, std::ios::out | std::ios::trunc | std::ios::binary); // Creating a new file if it doesn't exist
+	}
+	int i = 1;
+	if (inFile.peek() != std::ifstream::traits_type::eof()) // Checking if the file is empty
+	{
+		std::cout << "Choose a player or enter a new one:\n";
+	}
+	while(!inFile.eof())
+	{
+		Player temp;
+		temp.Read(inFile);
+		if (!inFile.eof())
+		{
+			std::cout << i++ << ") " << temp.name << std::endl;
+		}
+	}
+	inFile.clear();
+	inFile.seekg(inFile.beg);
+	std::cout << "Enter your name: ";
+	if (newGame)
+	{
+		std::cin.ignore();
+	}
+	std::cin.getline(name, MAX_NAME_SIZE);
+	bool newPlayer = true;
+
+	while (!inFile.eof())
+	{
+		Player temp;
+		temp.Read(inFile);
+		if (!strcmp(temp.name, name))
+		{
+			player = temp;
+			newPlayer = false;
+			break;
+		}
+	}
+	if (newPlayer)
+	{
+		std::cout << "Enter your age: ";
+		std::cin >> age;
+		player = Player(name, age);
+	}
+	short choice;
+	std::cout << std::endl;
+	do
+	{
+		std::cout << "Would you like to play with:\n1) Standard deck (52 card)\n2) Custom deck(you would have to enter the number of cards you want in it)\n";
+		std::cin >> choice;
+		if (choice == 1)
+		{
+			deck = Deck();
+		}
+		else if (choice == 2)
+		{
+			std::cout << "Enter the number of cards you would like to play with: ";
+			int numberOfCards;
+			std::cin >> numberOfCards;
+			while (numberOfCards < 52)
+			{
+				std::cout << "You can't play with less than 52 cards! Choose the number of cards again: ";
+				std::cin >> numberOfCards;
+			}
+			deck = Deck(numberOfCards);
+		}
+		else
+		{
+			std::cout << "Incorrect choice!\n";
+		}
+	} while (choice != 1 && choice != 2);
+	std::cout << "\nHello, " << player.GetName() << "! Your game starts now!\n";
+}
 
 void BlackJack::PlayerDraw()
 {
@@ -33,74 +123,6 @@ void BlackJack::DealerDraw()
 	std::cout << "(Points: " << dealerCurrentPoints << ")\n";
 }
 
-void BlackJack::GameStart(bool newGame)
-{
-	char name[MAX_NAME_SIZE];
-	int age;
-	playerCurrentPoints = 0;
-	dealerCurrentPoints = 0;
-	chanceToTwentyOne = 0;
-
-	std::cout << "Enter your name: ";
-	if (newGame)
-	{
-		std::cin.ignore();
-	}
-	std::cin.getline(name, MAX_NAME_SIZE);
-	std::cout << "Enter your age: ";
-	std::cin >> age;
-	player = Player(name, age);
-	int choice;
-	do
-	{
-		std::cout << "Would you like to play with:\n1) Standard deck (52 card)\n2) Custom deck(you would have to enter the number of cards you want in it)\n";
-		std::cin >> choice;
-		if (choice == 1)
-		{
-			deck = Deck();
-		}
-		else if (choice == 2)
-		{
-			std::cout << "Enter the number of cards you would like to play with: ";
-			int numberOfCards;
-			std::cin >> numberOfCards;
-			while (numberOfCards < 52)
-			{
-				std::cout << "You can't play with less than 52 cards! Choose the number of cards again: ";
-				std::cin >> numberOfCards;
-			}
-			deck = Deck(numberOfCards);
-		}
-		else
-		{
-			std::cout << "Incorrect choice!\n";
-		}
-	} while (choice != 1 && choice != 2);
-
-	std::cout << "\nHello, " << player.GetName() << "! Your game starts now!\n";
-}
-
-void BlackJack::SaveToFile(const char* fileName)
-{
-	char name[sizeof(Player)];
-	std::fstream ioFile(fileName, std::fstream::in | std::fstream::out | std::fstream::ate);
-	if (!ioFile)
-	{
-		throw std::runtime_error("Could not open file!");
-	}
-	while (!ioFile.eof())
-	{
-		ioFile.read(name, sizeof(Player));
-
-		if (!strcmp(name, player.GetName()))
-		{
-			player.Write(ioFile);
-			break;
-		}
-	}
-	player.Write(ioFile);
-}
-
 double BlackJack::ChanceToTwentyOne(const Deck& deck)
 {
 	if (playerCurrentPoints < 10)
@@ -118,6 +140,28 @@ double BlackJack::ChanceToTwentyOne(const Deck& deck)
 		}
 	}
 	return (double)counter / numberOfUndrawedCards;
+}
+
+void BlackJack::SaveToFile(const char* fileName)
+{
+	std::fstream ioFile(fileName, std::ios::in | std::ios::out | std::ios::binary);
+	if (!ioFile)
+	{
+		throw std::runtime_error("File couldn't be opened!");
+	}
+	while (!ioFile.eof())
+	{
+		int getPos = ioFile.tellg();
+		Player temp;
+		temp.Read(ioFile);
+		if (!strcmp(temp.name, player.name))
+		{
+			ioFile.seekp(getPos);
+			break;
+		}
+	}
+	ioFile.clear();
+	player.Write(ioFile);
 }
 
 BlackJack::BlackJack()
@@ -139,12 +183,12 @@ BlackJack::BlackJack()
 		}
 		if (choice == 1)
 		{
-			bool gameEnd = false;
 			PlayerDraw();
+			bool gameEnd = false;
 			if (playerCurrentPoints == 21)
 			{
 				std::cout << "Congratulations! You win!\n";
-				playerWins++;
+				player.wins++;
 				gameEnd = true;
 			}
 			else if (playerCurrentPoints > 21)
@@ -154,12 +198,11 @@ BlackJack::BlackJack()
 			}
 			if (gameEnd)
 			{
-				playerGamesPlayed++;
-				playerWinCoef = (double)(playerWins / playerGamesPlayed);
+				player.playedGames++;
+				player.winCoef = (double)player.wins / (double)player.playedGames;
 				std::cout << "Would you like one more game? [y/n]\n";
 				char charChoice;
 				std::cin >> charChoice;
-				newGame = true;
 
 				while (charChoice != 'y' && charChoice != 'Y' && charChoice != 'n' && charChoice != 'N')
 				{
@@ -168,11 +211,14 @@ BlackJack::BlackJack()
 				}
 				if (charChoice == 'y' || charChoice == 'Y')
 				{
+					newGame = true;
+					SaveToFile(FILE_NAME);
 					GameStart(true);
 					choice = 1;
 				}
 				else
 				{
+					SaveToFile(FILE_NAME);
 					break;
 				}
 			}
@@ -183,14 +229,14 @@ BlackJack::BlackJack()
 			if (playerCurrentPoints >= dealerCurrentPoints || dealerCurrentPoints > 21)
 			{
 				std::cout << "Congratulations! You win!\n";
-				playerWins++;
+				player.wins++;
 			}
 			else
 			{
 				std::cout << "You lose!\n";
 			}
-			playerGamesPlayed++;
-			playerWinCoef = (double)(playerWins / playerGamesPlayed);
+			player.playedGames++;
+			player.winCoef = (double)player.wins / (double)player.playedGames;
 			std::cout << "Would you like one more game? [y/n]\n";
 			char charChoice;
 			std::cin >> charChoice;
@@ -203,23 +249,24 @@ BlackJack::BlackJack()
 			if (charChoice == 'y' || charChoice == 'Y')
 			{
 				newGame = true;
+				SaveToFile(FILE_NAME);
 				GameStart(true);
 				choice = 1;
-				continue;
 			}
 			else
 			{
+				SaveToFile(FILE_NAME);
 				break;
 			}
 		}
 		else if (choice == 3)
 		{
-			std::cout << ChanceToTwentyOne(deck) << " (Points: " << playerCurrentPoints << ")\n";
+			std::cout << "Chance to hit 21: " << std::setprecision(2) << std::fixed << ChanceToTwentyOne(deck) * 100 << "% (Points: " << playerCurrentPoints << ")\n\n";
 		}
 		else
 		{
 			std::cout << "Incorrect choice!\n";
 		}
-	} while (choice != 2);
-	SaveToFile("Player.txt");
+	} while (true);
+	std::cout << "All changes are saved successfully in the file!\n";
 }
